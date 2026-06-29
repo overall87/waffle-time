@@ -13,7 +13,8 @@ import {
     orderBy,
     limit,
     doc,
-    runTransaction
+    runTransaction,
+    getCountFromServer
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 // --------------------
 // Buttons
@@ -277,3 +278,48 @@ async function loadCurrentFundraiser() {
 }
 
 loadCurrentFundraiser();
+// --------------------
+// Dashboard Statistics
+// --------------------
+
+async function loadDashboardStats() {
+
+    try {
+
+        const salesSnapshot = await getDocs(collection(db, "sales"));
+
+        let totalSales = 0;
+        let totalTickets = 0;
+
+        salesSnapshot.forEach((doc) => {
+
+            const sale = doc.data();
+
+            totalTickets += sale.quantity;
+
+            // If older sales don't have ticketPrice yet,
+            // default to $0 instead of crashing.
+            totalSales += (sale.ticketPrice || 0) * sale.quantity;
+
+        });
+
+        document.getElementById("ticketsSold").textContent = totalTickets;
+
+        document.getElementById("todaySales").textContent =
+            "$" + totalSales.toFixed(2);
+
+        const customerSnapshot =
+            await getCountFromServer(collection(db, "sales"));
+
+        document.getElementById("customerCount").textContent =
+            customerSnapshot.data().count;
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+loadDashboardStats();
