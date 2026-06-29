@@ -4,19 +4,45 @@ import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
 import {
     collection,
     addDoc,
     serverTimestamp,
+    getDocs,
+    query,
+    orderBy,
+    limit,
     doc,
     runTransaction
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-const logoutBtn = document.getElementById("logoutBtn");
-const sellBtn = document.getElementById("sellBtn");
+// --------------------
+// Buttons
+// --------------------
 
-const modal = document.getElementById("sellModal");
+const logoutBtn = document.getElementById("logoutBtn");
+
+const sellBtn = document.getElementById("sellBtn");
+const heroSell = document.getElementById("heroSell");
+
+const fundraiserBtn = document.getElementById("fundraiserBtn");
+
+// --------------------
+// Sell Ticket Modal
+// --------------------
+
+const sellModal = document.getElementById("sellModal");
 const closeModal = document.getElementById("closeModal");
+
+// --------------------
+// Fundraiser Modal
+// --------------------
+
+const fundraiserModal = document.getElementById("fundraiserModal");
+const closeFundraiser = document.getElementById("closeFundraiser");
+
+// --------------------
+// Authentication
+// --------------------
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
@@ -24,24 +50,80 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+// --------------------
+// Logout
+// --------------------
+
 logoutBtn.addEventListener("click", async () => {
     await signOut(auth);
     window.location.href = "login.html";
 });
 
-sellBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-});
+// --------------------
+// Sell Ticket Modal
+// --------------------
+
+function openSellModal() {
+    sellModal.style.display = "flex";
+}
+
+sellBtn.addEventListener("click", openSellModal);
+
+if (heroSell) {
+    heroSell.addEventListener("click", openSellModal);
+}
 
 closeModal.addEventListener("click", () => {
-    modal.style.display = "none";
+    sellModal.style.display = "none";
 });
 
+// --------------------
+// Fundraiser Modal
+// --------------------
+
+if (fundraiserBtn) {
+
+    fundraiserBtn.addEventListener("click", () => {
+
+        fundraiserModal.style.display = "flex";
+
+    });
+
+}
+
+if (closeFundraiser) {
+
+    closeFundraiser.addEventListener("click", () => {
+
+        fundraiserModal.style.display = "none";
+
+    });
+
+}
+
+// --------------------
+// Close Modals
+// --------------------
+
 window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-        modal.style.display = "none";
+
+    if (e.target === sellModal) {
+
+        sellModal.style.display = "none";
+
     }
+
+    if (e.target === fundraiserModal) {
+
+        fundraiserModal.style.display = "none";
+
+    }
+
 });
+
+// --------------------
+// Temporary Forms
+// --------------------
 
 document.getElementById("ticketForm").addEventListener("submit", async (e) => {
 
@@ -49,7 +131,6 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
 
     try {
 
-        const user = auth.currentUser;
         const quantity = Number(document.getElementById("ticketQuantity").value);
 
         const settingsRef = doc(db, "settings", "current");
@@ -59,7 +140,9 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
             const settingsDoc = await transaction.get(settingsRef);
 
             if (!settingsDoc.exists()) {
+
                 throw new Error("Settings document not found.");
+
             }
 
             const nextTicket = settingsDoc.data().nextTicket;
@@ -67,14 +150,19 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
             const numbers = [];
 
             for (let i = 0; i < quantity; i++) {
+
                 numbers.push(nextTicket + i);
+
             }
 
             transaction.update(settingsRef, {
+
                 nextTicket: nextTicket + quantity
+
             });
 
             return numbers;
+
         });
 
         await addDoc(collection(db, "sales"), {
@@ -89,20 +177,20 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
 
             ticketNumbers,
 
-            sellerId: user.uid,
+            fundraiser: document.getElementById("currentFundraiser").textContent,
 
             createdAt: serverTimestamp()
 
         });
 
         alert(
-            "🎉 Sale Complete!\n\nTickets:\n" +
+            "🎉 Sale Complete!\n\nTickets:\n\n" +
             ticketNumbers.join(", ")
         );
 
-        document.getElementById("ticketForm").reset();
+        sellModal.style.display = "none";
 
-        modal.style.display = "none";
+        document.getElementById("ticketForm").reset();
 
     } catch (error) {
 
@@ -113,3 +201,79 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
     }
 
 });
+
+document.getElementById("fundraiserForm").addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+        await addDoc(collection(db, "fundraisers"), {
+
+            name: document.getElementById("fundraiserName").value,
+
+            ticketPrice: Number(document.getElementById("ticketPrice").value),
+
+            startingTicket: Number(document.getElementById("startingTicket").value),
+
+            endingTicket: Number(document.getElementById("endingTicket").value),
+
+            nextTicket: Number(document.getElementById("startingTicket").value),
+
+            drawingDate: document.getElementById("drawingDate").value,
+
+            prize: document.getElementById("prize").value,
+
+            createdAt: serverTimestamp()
+
+        });
+
+        alert("🎉 Fundraiser Saved!");
+
+        fundraiserModal.style.display = "none";
+
+        document.getElementById("fundraiserForm").reset();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+});// --------------------
+// Load Current Fundraiser
+// --------------------
+
+async function loadCurrentFundraiser() {
+
+    const title = document.getElementById("currentFundraiser");
+
+    try {
+
+        const q = query(
+            collection(db, "fundraisers"),
+            orderBy("createdAt", "desc"),
+            limit(1)
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+
+            const fundraiser = snapshot.docs[0].data();
+
+            title.textContent = fundraiser.name;
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+loadCurrentFundraiser();

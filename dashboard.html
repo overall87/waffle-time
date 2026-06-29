@@ -1,103 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Waffle Ticket Time Dashboard</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waffle Ticket Time</title>
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<header>
-  <div class="logo">
-    <img src="assets/logo.png" alt="Waffle Ticket Time Logo">
-    <div>
-      <h1>WAFFLE TICKET TIME</h1>
-      <p>Seller Dashboard</p>
-    </div>
-  </div>
-</header>
+<div class="app">
 
-<main class="dashboard">
+    <!-- Sidebar -->
 
-  <h2>Welcome Back!</h2>
+    <aside class="sidebar">
 
-  <div class="stats">
+        <div class="brand">
 
-    <div class="stat-card">
-      <h3>Today's Sales</h3>
-      <h1>$0.00</h1>
-    </div>
+            <img src="assets/logo.png" alt="Logo">
 
-    <div class="stat-card">
-      <h3>Tickets Sold</h3>
-      <h1>0</h1>
-    </div>
+            <h2>WAFFLE<br>TICKET<br>TIME</h2>
 
-    <div class="stat-card">
-      <h3>Customers</h3>
-      <h1>0</h1>
-    </div>
+        </div>
 
-    <div class="stat-card">
-      <h3>Current Fundraiser</h3>
-      <h1>None</h1>
-    </div>
+        <nav>
 
-  </div>
+            <button class="nav-btn active">
+                📊 Dashboard
+            </button>
 
-  <div class="actions">
-    <button id="sellBtn">🎟 Sell Tickets</button>
-    <button>👥 Customers</button>
-    <button>📈 Sales</button>
-    <button>🏆 Draw Winner</button>
-    <button id="logoutBtn">🚪 Logout</button>
-  </div>
+            <button class="nav-btn" id="sellBtn">
+                🎟 Sell Tickets
+            </button>
 
-</main>
-<!-- Sell Ticket Modal -->
+            <button class="nav-btn">
+                👥 Customers
+            </button>
+
+            <button class="nav-btn">
+                📈 Sales History
+            </button>
+
+            <button class="nav-btn">
+                🏆 Draw Winner
+            </button>
+<button class="nav-btn" id="fundraiserBtn">
+    🎯 Fundraiser
+</button>
+            <button class="nav-btn">
+                ⚙️ Settings
+            </button>
+
+        </nav>
+
+        <button id="logoutBtn" class="logout">
+
+            🚪 Logout
+
+        </button>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Welcome Back 👋</h1>
+
+                <p>Let's raise some money today!</p>
+
+            </div>
+
+        </header>
+
+        <section class="cards">
+
+            <div class="card">
+
+                <h3>Today's Sales</h3>
+
+                <h2>$0.00</h2>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Tickets Sold</h3>
+
+                <h2>0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Customers</h3>
+
+                <h2>0</h2>
+
+            </div>
+
+           <div class="card">
+
+    <h3>Current Fundraiser</h3>
+
+    <h2 id="currentFundraiser">Not Selected</h2>
+
+</div>
+
+        </section>
+
+        <section class="hero">
+
+            <h2>Ready to Sell Tickets?</h2>
+
+            <p>
+
+                Start your next sale by clicking the button below.
+
+            </p>
+
+            <button id="heroSell">
+
+                🎟 Sell Tickets
+
+            </button>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- Modal -->
+
 <div id="sellModal" class="modal">
 
-  <div class="modal-content">
+    <div class="modal-content">
 
-    <span id="closeModal" class="close">&times;</span>
+        <span id="closeModal" class="close">&times;</span>
 
-    <h2>🎟 Sell Tickets</h2>
+        <h2>🎟 Sell Tickets</h2>
 
-    <form id="ticketForm">
+        <form id="ticketForm">
 
-      <input
-        type="text"
-        id="customerName"
-        placeholder="Customer Name"
-        required>
+            <input
+                id="customerName"
+                type="text"
+                placeholder="Customer Name"
+                required>
 
-      <input
-        type="tel"
-        id="customerPhone"
-        placeholder="Phone Number"
-        required>
+            <input
+                id="customerPhone"
+                type="text"
+                placeholder="Phone Number"
+                required>
 
-      <input
-        type="email"
-        id="customerEmail"
-        placeholder="Email (optional)">
+            <input
+                id="customerEmail"
+                type="email"
+                placeholder="Email">
 
-      <input
-        type="number"
-        id="ticketQuantity"
-        placeholder="Number of Tickets"
-        min="1"
-        value="1"
-        required>
+            <input
+                id="ticketQuantity"
+                type="number"
+                value="1"
+                min="1">
 
-      <button type="submit">
-        Complete Sale
-      </button>
+            <button type="submit">
 
-    </form>
+                Complete Sale
 
-  </div>
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<!-- Fundraiser Modal -->
+
+<div id="fundraiserModal" class="modal">
+
+    <div class="modal-content">
+
+        <span id="closeFundraiser" class="close">&times;</span>
+
+        <h2>🎯 Create Fundraiser</h2>
+
+        <form id="fundraiserForm">
+
+            <input
+                id="fundraiserName"
+                type="text"
+                placeholder="Fundraiser Name"
+                required>
+
+            <input
+                id="ticketPrice"
+                type="number"
+                placeholder="Ticket Price"
+                step="0.01"
+                required>
+
+            <input
+                id="startingTicket"
+                type="number"
+                placeholder="Starting Ticket Number"
+                value="1001"
+                required>
+
+            <input
+                id="endingTicket"
+                type="number"
+                placeholder="Ending Ticket Number"
+                value="3000"
+                required>
+
+            <input
+                id="drawingDate"
+                type="date"
+                required>
+
+            <textarea
+                id="prize"
+                placeholder="Grand Prize"
+                rows="3"></textarea>
+
+            <button type="submit">
+
+                Save Fundraiser
+
+            </button>
+
+        </form>
+
+    </div>
 
 </div>
 <script type="module" src="js/dashboard.js"></script>

@@ -286,4 +286,214 @@ font-size:20px;
     font-size:30px;
     cursor:pointer;
     font-weight:bold;
+}/* ======= VERSION 0.5 DASHBOARD ======= */
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f6fb;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:260px;
+    background:#1f2937;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:25px;
+    box-sizing:border-box;
+}
+
+.brand{
+    text-align:center;
+}
+
+.brand img{
+    width:90px;
+    margin-bottom:15px;
+}
+
+.brand h2{
+    margin:0;
+    color:#f5b400;
+    line-height:1.3;
+}
+
+.nav-btn{
+
+    width:100%;
+    padding:16px;
+
+    margin:8px 0;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:transparent;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    text-align:left;
+
+}
+
+.nav-btn:hover{
+
+    background:#374151;
+
+}
+
+.active{
+
+    background:#f5b400;
+
+    color:black;
+
+    font-weight:bold;
+
+}
+
+.logout{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#dc2626;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+}
+
+.main{
+
+    flex:1;
+
+    padding:40px;
+
+}
+
+.topbar h1{
+
+    margin-bottom:5px;
+
+}
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
+
+    margin:35px 0;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+
+}
+
+.card h3{
+
+    color:#888;
+
+    margin-top:0;
+
+}
+
+.card h2{
+
+    font-size:36px;
+
+    color:#f5b400;
+
+    margin-bottom:0;
+
+}
+
+.hero{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:45px;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+
+}
+
+.hero button{
+
+    margin-top:20px;
+
+    background:#f5b400;
+
+    color:black;
+
+    border:none;
+
+    padding:18px 40px;
+
+    border-radius:12px;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.hero button:hover{
+
+    transform:scale(1.03);
+
+}
+
+@media(max-width:900px){
+
+    .app{
+
+        flex-direction:column;
+
+    }
+
+    .sidebar{
+
+        width:100%;
+
+    }
+
 }
