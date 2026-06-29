@@ -40,7 +40,13 @@ const closeModal = document.getElementById("closeModal");
 
 const fundraiserModal = document.getElementById("fundraiserModal");
 const closeFundraiser = document.getElementById("closeFundraiser");
+// --------------------
+// Success Modal
+// --------------------
 
+const successModal = document.getElementById("successModal");
+const ticketResults = document.getElementById("ticketResults");
+const closeSuccess = document.getElementById("closeSuccess");
 // --------------------
 // Authentication
 // --------------------
@@ -87,6 +93,7 @@ if (fundraiserBtn) {
     fundraiserBtn.addEventListener("click", () => {
 
         fundraiserModal.style.display = "flex";
+        
 
     });
 
@@ -101,7 +108,15 @@ if (closeFundraiser) {
     });
 
 }
+if (closeSuccess) {
 
+    closeSuccess.addEventListener("click", () => {
+
+        successModal.style.display = "none";
+
+    });
+
+}
 // --------------------
 // Close Modals
 // --------------------
@@ -184,14 +199,21 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
 
         });
 
-        alert(
-            "🎉 Sale Complete!\n\nTickets:\n\n" +
-            ticketNumbers.join(", ")
-        );
-
         sellModal.style.display = "none";
 
-        document.getElementById("ticketForm").reset();
+ticketResults.innerHTML = "";
+
+ticketNumbers.forEach((ticket) => {
+
+    ticketResults.innerHTML += `
+        <h2>🎟 Ticket #${ticket}</h2>
+    `;
+
+});
+
+successModal.style.display = "flex";
+
+document.getElementById("ticketForm").reset();
 
     } catch (error) {
 
