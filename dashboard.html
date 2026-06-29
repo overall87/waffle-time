@@ -1,56 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Seller Dashboard</title>
-
-<link rel="stylesheet"
-href="css/style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waffle Ticket Time Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
 <header>
-
-<div class="logo">
-
-<img src="assets/logo.png">
-
-<div>
-
-<h1>WAFFLE TICKET TIME</h1>
-
-<p>Seller Dashboard</p>
-
-</div>
-
-</div>
-
+  <div class="logo">
+    <img src="assets/logo.png" alt="Waffle Ticket Time Logo">
+    <div>
+      <h1>WAFFLE TICKET TIME</h1>
+      <p>Seller Dashboard</p>
+    </div>
+  </div>
 </header>
 
-<main>
+<main class="dashboard">
 
-<h2>Welcome!</h2>
+  <h2>Welcome Back!</h2>
 
-<p>You have successfully logged in.</p>
+  <div class="stats">
 
-<button id="logoutBtn">
+    <div class="stat-card">
+      <h3>Today's Sales</h3>
+      <h1>$0.00</h1>
+    </div>
 
-Logout
+    <div class="stat-card">
+      <h3>Tickets Sold</h3>
+      <h1>0</h1>
+    </div>
 
-</button>
+    <div class="stat-card">
+      <h3>Customers</h3>
+      <h1>0</h1>
+    </div>
+
+    <div class="stat-card">
+      <h3>Current Fundraiser</h3>
+      <h1>None</h1>
+    </div>
+
+  </div>
+
+  <div class="actions">
+    <button id="sellBtn">🎟 Sell Tickets</button>
+    <button>👥 Customers</button>
+    <button>📈 Sales</button>
+    <button>🏆 Draw Winner</button>
+    <button id="logoutBtn">🚪 Logout</button>
+  </div>
 
 </main>
+<!-- Sell Ticket Modal -->
+<div id="sellModal" class="modal">
 
+  <div class="modal-content">
+
+    <span id="closeModal" class="close">&times;</span>
+
+    <h2>🎟 Sell Tickets</h2>
+
+    <form id="ticketForm">
+
+      <input
+        type="text"
+        id="customerName"
+        placeholder="Customer Name"
+        required>
+
+      <input
+        type="tel"
+        id="customerPhone"
+        placeholder="Phone Number"
+        required>
+
+      <input
+        type="email"
+        id="customerEmail"
+        placeholder="Email (optional)">
+
+      <input
+        type="number"
+        id="ticketQuantity"
+        placeholder="Number of Tickets"
+        min="1"
+        value="1"
+        required>
+
+      <button type="submit">
+        Complete Sale
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
 <script type="module" src="js/dashboard.js"></script>
 
 </body>
-
 </html>
